@@ -1,0 +1,907 @@
+Okay, here is a rundown of currently open bugs for debian's zsh package.
+
+I might make this a regular post (monthly or so) if people think it's
+worthwhile. This list is quite long - brace yourself. If you want to
+smaller, help closing bugs. Also, this list was written using emacs'
+org-mode, which may help you reading it, too.
+
+Actually, the text became so long, that I'd recommend org-mode. Load
+the file, hit "Shift-Tab" twice, and you got a nicely outlined
+overview. Move to any headline and hit tab repetively to toggle its
+visibility.
+
+This doesn't discriminate between serious, normal and wishlist bugs. I
+only care about how hard it is to fix a bug.  Also, I truncated a few
+bug titles (you'll see a "[...]" at the end of those lines).
+
+Here is goes:
+
+
+* Open Bugs for debian's zsh package
+
+The bugs are sorted into fixed and outstanding bugs. Outstanding bugs
+are split into easy, not-so-easy and hart. The bugs themselves in the
+subcategories are sorted from old to new. Some bugs, while being open
+in the BTS may in fact by fixed. Those are in the "Fixed in *"
+categories.
+
+
+** Fixed in current packages
+
+If there are bugs listed in here, that means the bug has been dealt with
+and for some reason wasn't closed by an upload (probably because of
+missing Closes:).
+
+*** #162291 zsh: Path completion fails for paths with ..
+
+    Marked as fixed-upstream. And that's true in fact. Close this one
+    therefore.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=162291
+
+*** #273097 'unset nosuchvar' should leave $? as zero
+
+    This is fixed upstream for a while.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=273097
+
+*** #545916 /etc/zsh/zshrc:14: unknown parameter: terminfo
+
+    I pretty sure this one is fixed upstream. It should at least be in
+    version 4.3.11 of the shell (and should therefore be fixed in the
+    current version of the package). I'll look up the actual fix later.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=545916
+
+*** #570878 zsh: Please add completion for pbuilder/cowbuilder
+
+    Clint's completion function is shipped with the shell. So this bug
+    is fixed already.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=570878
+
+*** #589035 please provide zsh completion for osc
+
+    The completion is included upstream. This should be closed.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=589035
+
+
+** Fixed upstream
+
+Bugs in this category have been dealt with upstream. It may be wise to
+backport the fix for the package if that is feasible.
+
+*** #276187 zsh: Ineractive menu completion with tab doesnt work
+
+    I can't reproduce this with a current git HEAD build. Anyone on
+    4.3.11, who could check? It's trivial to do, really.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=276187
+
+
+** Bug reports with uncertain status
+
+These bugs (if any) may not even be bugs. They might be bugs for other
+programs or simply the result of pebcak. In any case, we may not be
+responsible and the status should be evaluated as soon as possible.
+
+*** #240618 cd completion offers usernames when CDABLE_VARS is set
+
+    Quoting the manual:
+
+    CDABLE_VARS
+      If the argument to a cd command (or an implied cd with the
+      AUTO_CD option set) is not a directory, and does not begin with
+      a slash, try to expand the expression as if it were preceded by
+      a `~' (see the section `Filename Expansion').
+
+    And "cd ~<tab>" would offer users. So this actually works as
+    documented. Clint commented, that the problem is that the resulting
+    command wouldn't work. But that's not true:
+
+      zsh-~% setopt cdablevars
+      zsh-~% cd ft
+      ~ft
+      zsh-~ft%
+
+    So this is not a bug and should be closed.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=240618
+
+*** #368936 portable shell xargs too hard to write [...]
+
+    I'd like to close this one, wontfix. I don't see how this is a zsh
+    bug at all. I got the feeling that the reporter is pissed that
+    shell scripting can be a bitch at times. (Also, people should use
+    "find -whatever -exec the-code +" - yes, plus. It's POSIX.)
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=607628
+
+*** #517008 alias not expanded with zsh -c
+
+    As far as I know, upstream is not going to change the current behaviour
+    drastically. And since it seems that the POSIX standard allows for
+    this to be handled the way it currently is, I don't think this is
+    even a bug. Upstream will put a warning about the behaviour into
+    its manual.
+
+    I think this should be closed.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=517008
+
+*** #526647 zsh won't accept vaild commands when used through ssh
+
+    Clint doesn't believe this is a zsh bug at all. I agree.
+    Also, the reporter didn't react at all.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=526647
+
+*** #557025 mplayer tab completion order
+
+    Not a bug. It's a matter of configuration. Clint provided the
+    required snippet. This should be closed.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=557025
+
+*** #559124 unnecessary files
+
+    I'm sorry, I don't consider this a bug. And if anything it's a wishlist
+    priority thing. To be frank, I consider it largely masturbatory.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559124
+
+*** #578466 Shouldn't correct to "rm" too easily
+
+    The correction system is fairly hardcoded with little to no
+    configurability. While I'm surprised `grem' was suggested to be
+    corrected to `rm', to fix this for real would be quite a task.
+    It may be easier to bring in a special case for "rm", but then
+    we may soon be needing one for "del" as well. The reporter
+    said he'd be okay if the bug were closed, since he didn't read
+    zsh's prompts at all, which was the reason for the actual problem
+    in the first place.
+
+    I think we should close the bug.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=578466
+
+
+** Outstanding bugs
+
+Outstanding bugs are sorted into their own sub-categories, from easy
+to really really hard.
+
+
+*** Low-hanging fruit
+
+These bugs should be fixable with low to reasonable effort.
+
+
+**** #138691 completion for man should find filenames as well as [...]
+
+     I vaguely remember this being fixed upstream. Needs to be checked
+     and if it's indeed fixed, closed.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=138691
+
+**** #138912 ssh hostname completion shoud use hostnames from [...]
+
+     Ssh host name completion has been debated a couple of
+     times. Different people like to do it differently. I don't think
+     we should change the default behaviour here. IMHO this should be
+     wontfix.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=138912
+
+**** #161506 most manpages should move to section 7
+
+     Personally, I don't think it should. The manpages are really done
+     big manual split into many. If it were one fat zsh(1), nobody
+     would complain. I think this is wontfix, too.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=161506
+
+**** #253794 Make <(..) work for shell scripts
+
+     I can't reproduce this. Albeit, I'm not using `mailstat'. I made
+     a trival script:
+
+      #!/bin/sh
+      head -n8 "$1"
+
+     Now doing this: sh t.sh <( zcat some_file.txt.gz )
+     ...works.
+
+     I don't know. Maybe the Linux kernel's behaviour with respect to
+     /proc/self/... changed. In any case, I think this should be closed
+     either as can't-reproduce or as wontfix. Comments?
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=253794
+
+**** #257336 command correction should not suggest _ prefixed completion functions
+
+     This was true and incredibly annoying. In recent versions this can
+     be configured away:
+
+     CORRECT_IGNORE='_*'
+
+     We should suggest that to the user and close the bug.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=257336
+
+**** #345427 zsh has a different default PATH from bash's
+
+     Usually, I'd say "And how is that a zsh bug and not a bash
+     bug?". But this is probably easy to fix if upstream could be
+     persuaded. If there's no `PATH' variable, zsh uses a default of
+     "/bin:/usr/bin:/usr/ucb:/usr/local/bin", which is less then ideal
+     on a debian system. Even if upstream does not want to change, we
+     could patch this up within the package. I suspect the needed
+     change to be rather simple.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=345427
+
+**** #346119 Non-ASCII letters are not accepted in variable names
+
+     Didn't look at it very closely, but I'm pretty sure this is fixed
+     upstream. Therefore, this should be easy.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=346119
+
+**** #349582 /etc/skel/.zshrc remains after upgrade
+
+     Okay, some debian developer will have to comment here. I don't know.
+     Purely a packaging issue.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=349582
+
+**** #374906 Should take care of combining accents
+
+     Err... Okay. I think zsh does handle combining accents in recent
+     versions. And it seems the reporter concurs. Then they start talking
+     about displaying the character. but if zsh correctly outputs the
+     correct multibyte sequence, its job is really done and the terminal
+     needs to do the right thing.
+
+     I think this was a bug, but now is a terminal and/or font issue.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=374906
+
+**** #418199 segfault with exceedingly long path
+
+     This one has a fixed-upstream tag, due to a patch by pws. I
+     vaguely remember this being committed upstream, too. Wouldn't
+     hurt to retest, though.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=418199
+
+**** #430146 please add .ssh/config Hosts to the hosts zstyle completion
+
+     Clint gave a patch. The reporter didn't reply. .ssh/config is
+     read by _ssh these days. Clint's patch is not applied upstream I
+     think. We should poke the reporter.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=430146
+
+**** #469458 backspace not working anymore
+
+     Well. Keyboard handling in unix terminals is a bitch.
+
+     To make things worse, there are different modes in which a terminal
+     can be in. You can ask terminfo for the correct value of a key
+     sequence, but for that the terminal needs to be in application
+     mode. And even then, terminfo can be wrong and/or the terminal
+     may behave wrongly.
+
+     The problem is that zsh's line editor (zle) does not put the
+     terminal into application mode by default. That's why we're
+     doing s/[/O/ business in our zshrc when asking terminfo for
+     key sequences (oh and that replacement is wrong for some
+     terminals).
+
+     The correct[tm] thing to do is to use a zle-hook to put the terminal
+     into application mode when it's accepting interactive input. But
+     the problem with that is, that it may break a lot of users' existing
+     custom key bindings. So we're fairly screwed.
+
+     To fix this particular bug, we should just bind '^?' and '^h' to
+     whatever backspace should do. Unless someone has a convincing argument
+     that that's a bad idea.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=469458
+
+**** #481168 debconf question to determine whether bindkey -v should [...]
+
+     I think this should be closed wontfix. I know that some people
+     get confused. But this is historical behaviour, that is well
+     documented. Also, zsh doesn't do this alone. Ksh93 does the
+     same. The underlying problem IMHO is, that people don't realise
+     that the shell's line editor is quite powerful and that there is
+     a vi-mode which could be automatically chosen if they use vi in
+     the first place.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=481168
+
+**** #489646 Wish for /etc/zsh/completion.d
+
+     I agree with Clint, that people should submit completions
+     upstream so everyone can benefit. That being said, it's trivial
+     to add a directory to $fpath via the global zshenv.
+
+     However, it's *NOT* going to be in /etc. That's just plain
+     wrong. We've seen what that leads to with grml-etc-core in the
+     grml project before. FWIW, I'd vote for
+        /usr/share/zsh/Completion/Vendor/
+     or something along that line.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=611175
+
+**** #510358 please allow use as /bin/sh
+
+     I'm against doing this. I wouldn't do this myself, and I'm a
+     hardcore zsh-fan. We had this in grml for a while and it worked
+     for a while until it didn't, because a package maintainer decided
+     to call a function `repeat' and was unwilling to change for zsh
+     (which was understandable, since it's a perfectly valid function
+     name). In zsh it's also a reserved word. Recent versions have
+     quite a number of issues like that fixed in sh-mode. But I'd
+     still advise against it. Strongly. There are better shells to use
+     as `/bin/sh'. Therefore, wontfix.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=510358
+
+**** #525313 zsh: please add completion for latexmk
+
+     Currently, latexmk uses the same completion as latex, etc. Namely
+     _tex. I think that's enough to close this bug as being fixed.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=525313
+
+**** #535851 completion does not work anymore with some [...]
+
+     Apparently zstyle ':completion:*' file-sort access causes a problem
+     for a user. The bug contains a patch by Clint. I can't tell if the
+     user tested it or not. No reply, yet.
+
+     If Clint's patch fixes the issue, this is trivial to fix. If not,
+     it may become hairier.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=535851
+
+**** #536459 Ctrl-ARROW gives ';5A' escape sequence instead of moving [...]
+
+     Another key binding issue. Ctrl-Arrow may not even work on a lot of
+     terminals. IMHO people expect a little much from a basic default
+     setup.
+
+     For details, why keys and unix terminals are a pain, see the comment
+     for #469458.
+
+     I'm mildly leaning towards marking this one wont-fix.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=536459
+
+**** #538069 Completions for paq8l, par2, sipp
+
+     The reporter sent in three new completions. Clint asked a
+     question. The guy didn't respond. I didn't check if the
+     completions are included upstream by now or not. If not, we need
+     to contact the guy and see whether he feels like answering
+     Clint's question.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=538069
+
+**** #554880 global zshrc should source /etc/zsh_command_not_found if [...]
+
+     I wholeheartedly agree with Clint here. This should absolutely
+     stay in the control of the individual user. It's trivial to add
+     and potentially tedious to get rid of again. Wontfix. Really.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=554880
+
+**** #568333 bad %? value for prompt expansion
+
+     The reporter says this didn't apply to zsh-beta back then. I
+     suppose it's probably not in 4.3.11 anymore then. Didn't try
+     yet. But this is easy to verify and close (unless the bug
+     reappeared).
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=611175
+
+**** #579209 insert-last-word problem after completion
+
+     Contains a patch by pws. Don't remember if it's applied upstream.
+     If it is, it's in the 4.3.11 release and this bug belongs in the
+     "Fixed in current packages" category. Otherwise it's trivial to
+     fix, since the fix is already there.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=611175
+
+**** #582258 zsh-mime-setup disables usual completions
+
+     Contains a workaround by Clint and a more elaborate by pws. I need to
+     check if this was committed upstream. If it was this is done. If not
+     it may be trivial to fix if pws's patch does the trick.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=582258
+
+**** #600151 zsh terminal-type completion doesn't look in [...]
+
+     This sounds easy, by a first assessment.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=600151
+
+**** #605849 A backgrounded pipeline should return a status of zero
+
+     Sounded hard when I first read it. The reporter says that zsh-beta
+     is fine, which may mean that the fix is in 4.3.11. Need to check
+     if that's true. If so, this is trivial.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=605849
+
+**** #611175 VCS_INFO wrongly detects svn repositories
+
+     Contains a patch by the reporter, which is correct (I'm vcs_info's
+     upstream). Trivial to fix therefore.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=611175
+
+
+*** Thouger nuts
+
+Bugs in this category are probably a bit harder to handle or they may
+require a conciderable amount of work/testing to be resolved.
+
+**** #51640 [difficult] zsh: Position of the cursor to fix errors
+
+     The oldest one there is. :)
+
+     I actually like the idea quite a bit. And it shouldn't be
+     impossible, albeit not easy. I may take a stab at that when I'm
+     vacationing next month...
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=51640
+
+**** #175467 zsh -n wrongly executes math expressions
+
+     This still seems to be around. I don't think we can go forward
+     without involving upstream.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=175467
+
+**** #247556 zsh build gets stuck running tests
+
+     I don't have that environment available to check. If it's still
+     there, it's probably hard to fix.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=247556
+
+**** #269769 sabcmd completion doesn't work
+
+     Didn't check yet. But probably not easy. Otherwise the people
+     involved would have figured it out by now.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=269769
+
+**** #284191 would like autocompletion for autogen.sh [...]
+
+     Clint said something along the lines of parsing autogen.sh and
+     then disect a configure --help call from that.
+
+     I don't think that'll work well. The autogen.sh scripts I've seen
+     are the ones that actually generate configure so we can't call it
+     yet. I admit, it's annoying that some of them call configure with
+     default options, but that not really zsh's problem.
+
+     If someone wants to take a try, go ahead.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=284191
+
+**** #285266 zsh: ecasound completion doesn't complete file names
+
+     Didn't look at it at length. But reporters that don't react are
+     the best.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=285266
+
+**** #315255 cvs commit completion breaks on spaces
+
+     Need to test this one... If it's still there, it'll be hard.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=315255
+
+**** #321494 [zsh/stat] problems with large files
+
+     Didn't test this, yet.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=321494
+
+**** #330883 For svn revert, _subversion completes deleted files incorrectly
+
+     This spans over two years. No final judgement was made. If this is
+     still a bug, it will require some work.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=330883
+
+**** #342347 zsh: _cache_svn_status makes subversion completion fail [...]
+
+     Another one that needs to be tested.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=#342347
+
+**** #346162 zsh: jobs -p is not POSIX-compliant
+
+     I think this should be a case for a fixed up jobs in sh-mode. In
+     zsh-mode this will never be changed. The zsh behaviour predates
+     the spec.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=346162
+
+**** #351663 change to /etc/zsh/zlogin
+
+     This blocks #344030. It's requested to include some code in the
+     global `zlogin' file. The code is this:
+
+    # This fixes the desktop-profiles corner-case where a graphical client is
+    # started through an ssh -X session (in which the Xsession.d scripts aren't
+    # run, so we need to make sure the profiles are activated according to the
+    # specified settings at login).
+    #
+    DESKTOP_PROFILES_SCRIPT="/etc/X11/Xsession.d/20desktop-profiles_activateDesktopProfiles"
+    if (test -f $DESKTOP_PROFILES_SCRIPT); then
+      # testing SSH_CLIENT as the woody ssh doesn't set SSH_CONNECTION
+      # also testing SSH_CONNECTION as the current ssh manpage no longer mentions
+      # SSH_CLIENT, so it appears that variable is being phased out.
+      if ( (test -n "${SSH_CLIENT}") || (test -n "${SSH_CONNECTION}") ) && \
+         (test -n "${DISPLAY}"); then
+        # zsh needs the shwordsplit option set otherwise activateDesktopProfiles
+        # script wil error out
+        if (setopt | grep shwordsplit); then
+          source $DESKTOP_PROFILES_SCRIPT;
+        else
+          setopt shwordsplit;
+          source $DESKTOP_PROFILES_SCRIPT;
+          unsetopt shwordsplit;
+        fi;
+      fi;
+    fi;
+
+     Does anybody know what that's about? I don't even know what
+     `desktop-files' is.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=351663
+
+**** #374913 zsh: Completion should handle combining accents equivalents
+
+     Probably very hard. Could be in "Nightmare", too.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=374913
+
+**** #375959 zsh: env completion is broken
+
+     I didn't check if Clint's patch from the discussion was applied or
+     not. We should check if this still applies to current versions.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=375959
+
+**** #381842 completion of "dpkg -s" no longer works after a Ctrl-C
+
+     This has to do with caching completion results. Need to check if
+     this is still an active bug. Clint's patches in the report didn't
+     seem to work for the reporter.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=513511
+
+**** #389111 autocompletion fails on non-printable characters in [...]
+
+     Clint mentions where the bug is hidden most likely. Probably very
+     hard to fix. The bug is still in my current git build.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=389111
+
+**** #397334 zsh fails to figure out the current directory on bind mounts
+
+     Fairly old; Seems to be still active. Not necessarily easy to fix.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=397334
+
+**** #419233 error messages start with lowercase letters
+
+     This one is still present. Quite cosmetic. We should ask upstream
+     if they care. (I'll admit, it looks ugly when the error are in
+     german).
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=419233
+
+**** #438666 zsh/stat and symlinks: reverse the effect of the -L option
+
+     We should ask upstream. There's a patch included, so this might
+     be easier than it sounds.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=438666
+
+**** #463507 Completion fails with: "_main_complete:161: [...]
+
+     This seems to have morphed from one bug into another. The original bug
+     was caused by a bug in the newuser module, which should be fixed. The
+     new one apparently is still on.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=463507
+
+**** #486283 Use description of modules from zshmodules
+
+     I think the underlying idea makes sense. I also think Clint is
+     right to want to solve this at build time. It may take some work
+     to get working flawlessly.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=486283
+
+**** #490099 zsh: autocompletion enforces order, apt-get remove [...]
+
+     This one is still a bug in recent versions. Someone with
+     reasonable compsys insight should be able to deal with it. Please
+     don't look at me right now. :)
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=490099
+
+**** #505301 Please add completion for TopGit using its shell [...]
+
+     Most work for this bug needs to be done by topgit's upstream. I'm
+     not putting this in "Low-hanging..." because it involves compsys
+     and most people are afraid of it.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=505301
+
+**** #510038 glob qualifer - doesn't work correctly on dangling symlinks
+
+     We need to check if this one is still a bug in recent versions.
+
+     Also, there's a double close mentioned, which we could report
+     upstream.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=510038
+
+**** #512045 "select" gives incomplete list
+
+     No reply yet.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=512045
+
+**** #513491 %a support in printf builtin
+
+     This is still a bug in latest versions. Don't know how hard it
+     would be to fix. I'd imagine the effort would be reasonable.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=513491
+
+**** #513511 zargs: cannot fit single argument within size limit
+
+     I've seen this myself from time to time, but I don't know how to
+     trigger it reliably, yet. If someone catches it, a shell trace
+     might be useful.
+
+     This is marked as "important". I don't know why that was done.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=513511
+
+**** #527171 segfaults on long environment variables
+
+     This may be a problem with the host's `setenv()' call. We should
+     take a look at this. If it's a zsh bug it may be reasonably easy
+     to fix (pws looked at the involved code and suspected that setenv()
+     is not signaling an error when it couldn't fit a value into the
+     environment - so I suspect it may not be a zsh bug).
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=527171
+
+**** #533527 Provided scripts fail when cshjunkiequotes is enabled
+
+     I remember this one. The _vim case should be handled, IIRC. The others
+     should probably be fixed too. The problem is that with this option set,
+     zsh can't deal with quoted strings that span over a newline (no, I do
+     not know why anybody would ever want to set cshjunkiequotes at all,
+     but I guess that ship has sailed).
+
+     I should dig up the conversation on upstream's mailing lists.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=533527
+
+**** #537678 after putting a job in background, line edition does not work
+
+     This one could be tough. Axel asked for moreinfo, so let's see what
+     that leads us to. If the reporter doesn't react and we can't reproduce
+     it, then this should be closed.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=537678
+
+**** #570951 ssh completes to non-resolvable hostname from [...]
+
+     If we were to fix this one as suggested, it would be quite a bit of
+     work. The ssh completion is already a little bug-ridden, if you
+     ask me. So this may not be trivial.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=570951
+
+**** #590454 Completion doesn't work on symlink to . with ignore-[...]
+
+     No reply yet. Doesn't sound impossible to fix.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=590454
+
+**** #593426 Status of background jobs not updated
+
+     From what I gather from the conversation, this sounds hard to get
+     right. There's a patch from pws, which Bart Schaefer wasn't quite
+     sure about. So... this one needs work.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=593426
+
+**** #597062 supply host completion for sshfs
+
+     _sshfs uses _user_at_host, AFAICS from a quick look. Rsync uses
+     its own function for that. Don't know what's the best route to go
+     here.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=597062
+
+**** #603503 numerous infelicities in git completion
+
+     Ah, the _git completion. Source fear, awe, shock and horror.
+
+     There is a major update available, which should fix all the issues
+     mentioned in this bug, AFAIK. The update is not committed upstream
+     yet, because sf.net's CVS is still down.
+
+     The update should be tested and checked for these issues. Which is
+     why I'm sticking it into the "Tougher..." category. If you'd like
+     to fix all problems (especially the performance related ones, that
+     task could easily go into "Nightmare").
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=603503
+
+**** #607615 Behavior of ":A" and ":a" isn't clear and seems wrong
+
+     Didn't read the report entirely yet. Those are recent features and
+     the author is on IRC frequently. We should see if this is actually
+     a problem and if so, ask upstream for assistance. Probably not too
+     hard.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=607615
+
+**** #607628 prompt not immediately updated after window resize [...]
+
+     This one sounds incredibly annoying to hunt. Depending on what
+     sort of bug is behind this, it could be rather hard to get to. I
+     had hoped this was another SIGWINCH bug (which was fixed), but
+     when I looked at the submission date it became clear, that this
+     is probably something else. Bummer.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=607628
+
+
+*** Nightmare
+
+If you don't know what nightmare means here, you never played Doom. Anyway,
+the bugs in this category will probably take quite a bit of man power and
+brains to handle. I doubt any of them can be resolved without involving
+upstream.
+
+**** #256895 [compctl] completion fails for programs with spaces [...]
+
+     This is an upstream confirmed bug. I don't know if it still applies to
+     newer versions of the shell. If it does, this is probably hard to fix.
+
+     The workaround is to start using compsys already.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=256895
+
+**** #288323 doesn't handle suspension of commands in conditional [...]
+
+     If I'm reading Bart correctly, zsh does the most reasonable thing
+     here. I didn't investigate any further. If we decide, this is a
+     bug, it's probably incredibly hard to get right. I'd close it
+     wontfix.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=607628
+
+**** #289748 menu navigation is suboptimal
+
+     It seems this can be worked around.
+
+     Fixing is probably a little out of the question. You usually know
+     if you should go after a problem or not be listening to pws's
+     comments. And here he made a joke about a 900-line function that
+     contains the heroic number of five comments. I won't touch that.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=289748
+
+**** #300470 trap mechanism on command-line length limitation with [...]
+
+     Bart is convinced this can be done in a preexec() hook. So that's
+     probably true.
+
+     Implementing the entire idea should be a shit-load of work.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=300470
+
+**** #303623 CHECK_JOBS doesn't work when only one command was run since last Control-D
+
+     This seems to have to do with terminals and timing. I'm not going
+     near it. Braver people are welcome to try.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=303623
+
+**** #353863 No response and huge CPU usage on some completion(s)
+
+     Here's a rather old one from 2006. Compsys bugs usually suck to
+     debug. I've seen zsh's completion hang occationally, too. But so
+     far I've never been able to really but my finger on it.
+
+     This report is there another time: #353870 with slightly more
+     information from the reporter. This probably makes sense to
+     forward upstream if we're able to reproduce.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=353863
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=353870
+
+**** #514857 zsh -c 'set -e; ! true; echo OK' fails
+
+     pws says he's not touching this until the standard gets clarified. So,
+     it's not clear whether this is indeed a bug or not. If it is, it's
+     probably a bitch to fix.
+
+     Is there a bug state that would be appropriate? Pending? *shrug*
+
+     This one is merged with #519571 and #520101.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=514857
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=519571
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=520101
+
+**** #527110 segfaults when term is one line tall while doing tab [...]
+
+     I need to check if it's still reproducable. If so, it may be
+     hard to fix.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=527110
+
+**** #555957 failed to create hard link as lock file [...]
+
+     This was forwarded already. I'm not sure if it still applies. If
+     it does, this could be quite a lot of work.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=555957
+
+**** #589300 multibyte character support broken again
+
+     Damn, multibyte issues scare the crap out of me. We should forward
+     this one if it's reproducable (which it probably is).
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=589300
+
+**** #589339 zsh frozen with zombie child
+
+     I've got no idea how to handle this at all. We could try getting in
+     touch with the reporter and see what his thougts are.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=589339
+
+**** #603816 git checkout completion performance regression
+
+     Just when I typed in the comment for #603503, I'm stumbling across
+     this one. Like I said, the performance issues are a major issue,
+     with _git in large repositories. The source of the issues is not
+     so much of a mystery, but fixing them is a *major* pain in the ass
+     that will take a *loooooooooong* long time.
+
+     Oh, don't be fooled into using the bash completion with git, though.
+     While that seems to be possible with recent versions of that code,
+     the completion is BY FAR more simplistic than what zsh's _git has
+     to offer. I have to use it from time at work, and trust me, you'll
+     be catching yourself yelling "Why the f*ck aren't you completing
+     that for me!?".
+
+     Anyway. This is a bitch to fix.
+
+     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=603816
