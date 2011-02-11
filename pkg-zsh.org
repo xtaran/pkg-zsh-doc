@@ -99,6 +99,21 @@ missing Closes:).
 
     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=589035
 
+*** #603503 numerous infelicities in git completion
+
+    Ah, the _git completion. Source fear, awe, shock and horror.
+
+    There is a major update available, which should fix all the issues
+    mentioned in this bug, AFAIK. The update is not committed upstream
+    yet, because sf.net's CVS is still down.
+
+    The update should be tested and checked for these issues. Which is
+    why I'm sticking it into the "Tougher..." category. If you'd like
+    to fix all problems (especially the performance related ones, that
+    task could easily go into "Nightmare").
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=603503
+
 
 ** Fixed upstream
 
@@ -743,21 +758,6 @@ require a conciderable amount of work/testing to be resolved.
      here.
 
      http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=597062
-
-**** #603503 numerous infelicities in git completion
-
-     Ah, the _git completion. Source fear, awe, shock and horror.
-
-     There is a major update available, which should fix all the issues
-     mentioned in this bug, AFAIK. The update is not committed upstream
-     yet, because sf.net's CVS is still down.
-
-     The update should be tested and checked for these issues. Which is
-     why I'm sticking it into the "Tougher..." category. If you'd like
-     to fix all problems (especially the performance related ones, that
-     task could easily go into "Nightmare").
-
-     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=603503
 
 **** #607615 Behavior of ":A" and ":a" isn't clear and seems wrong
 
