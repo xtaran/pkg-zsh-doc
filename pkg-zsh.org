@@ -45,6 +45,13 @@ missing Closes:).
 
     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=273097
 
+*** #346119 Non-ASCII letters are not accepted in variable names
+
+    Didn't look at it very closely, but I'm pretty sure this is fixed
+    upstream. Therefore, this should be easy.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=346119
+
 *** #545916 /etc/zsh/zshrc:14: unknown parameter: terminfo
 
     I pretty sure this one is fixed upstream. It should at least be in
@@ -248,13 +255,6 @@ These bugs should be fixable with low to reasonable effort.
      change to be rather simple.
 
      http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=345427
-
-**** #346119 Non-ASCII letters are not accepted in variable names
-
-     Didn't look at it very closely, but I'm pretty sure this is fixed
-     upstream. Therefore, this should be easy.
-
-     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=346119
 
 **** #349582 /etc/skel/.zshrc remains after upgrade
 
