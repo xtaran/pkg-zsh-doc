@@ -79,6 +79,13 @@ backport the fix for the package if that is feasible.
 
     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=276187
 
+*** #611175 VCS_INFO wrongly detects svn repositories
+
+    Contains a patch by the reporter, which is correct (I'm vcs_info's
+    upstream). Trivial to fix therefore.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=611175
+
 
 ** Bug reports with uncertain status
 
@@ -439,13 +446,6 @@ These bugs should be fixable with low to reasonable effort.
      if that's true. If so, this is trivial.
 
      http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=605849
-
-**** #611175 VCS_INFO wrongly detects svn repositories
-
-     Contains a patch by the reporter, which is correct (I'm vcs_info's
-     upstream). Trivial to fix therefore.
-
-     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=611175
 
 
 *** Thouger nuts
