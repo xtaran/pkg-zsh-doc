@@ -52,6 +52,33 @@ missing Closes:).
 
     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=346119
 
+*** #469458 backspace not working anymore
+
+    Well. Keyboard handling in unix terminals is a bitch.
+
+    To make things worse, there are different modes in which a terminal
+    can be in. You can ask terminfo for the correct value of a key
+    sequence, but for that the terminal needs to be in application
+    mode. And even then, terminfo can be wrong and/or the terminal
+    may behave wrongly.
+
+    The problem is that zsh's line editor (zle) does not put the
+    terminal into application mode by default. That's why we're
+    doing s/[/O/ business in our zshrc when asking terminfo for
+    key sequences (oh and that replacement is wrong for some
+    terminals).
+
+    The correct[tm] thing to do is to use a zle-hook to put the terminal
+    into application mode when it's accepting interactive input. But
+    the problem with that is, that it may break a lot of users' existing
+    custom key bindings. So we're fairly screwed.
+
+    To fix this particular bug, we should just bind '^?' and '^h' to
+    whatever backspace should do. Unless someone has a convincing argument
+    that that's a bad idea.
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=469458
+
 *** #545916 /etc/zsh/zshrc:14: unknown parameter: terminfo
 
     I pretty sure this one is fixed upstream. It should at least be in
@@ -290,33 +317,6 @@ These bugs should be fixable with low to reasonable effort.
      think. We should poke the reporter.
 
      http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=430146
-
-**** #469458 backspace not working anymore
-
-     Well. Keyboard handling in unix terminals is a bitch.
-
-     To make things worse, there are different modes in which a terminal
-     can be in. You can ask terminfo for the correct value of a key
-     sequence, but for that the terminal needs to be in application
-     mode. And even then, terminfo can be wrong and/or the terminal
-     may behave wrongly.
-
-     The problem is that zsh's line editor (zle) does not put the
-     terminal into application mode by default. That's why we're
-     doing s/[/O/ business in our zshrc when asking terminfo for
-     key sequences (oh and that replacement is wrong for some
-     terminals).
-
-     The correct[tm] thing to do is to use a zle-hook to put the terminal
-     into application mode when it's accepting interactive input. But
-     the problem with that is, that it may break a lot of users' existing
-     custom key bindings. So we're fairly screwed.
-
-     To fix this particular bug, we should just bind '^?' and '^h' to
-     whatever backspace should do. Unless someone has a convincing argument
-     that that's a bad idea.
-
-     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=469458
 
 **** #481168 debconf question to determine whether bindkey -v should [...]
 
