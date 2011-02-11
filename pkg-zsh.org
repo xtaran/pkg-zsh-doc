@@ -1,20 +1,19 @@
-Okay, here is a rundown of currently open bugs for debian's zsh package.
+--- DZB - Debian Zsh Bugs ---
 
-I might make this a regular post (monthly or so) if people think it's
-worthwhile. This list is quite long - brace yourself. If you want to
-smaller, help closing bugs. Also, this list was written using emacs'
-org-mode, which may help you reading it, too.
+This document is written using the fabulous emacs extension
+org-mode. It's plain text, so don't worry, you can read it with any
+text viewer/editor you like. Org-mode does provide some nice features
+for hiding parts of the text as well as highlighting of
+headlines/links/etc.
 
-Actually, the text became so long, that I'd recommend org-mode. Load
-the file, hit "Shift-Tab" twice, and you got a nicely outlined
-overview. Move to any headline and hit tab repetively to toggle its
-visibility.
+This doesn't discriminate between serious, normal and wishlist
+bugs. It only cares about how hard it is to fix a bug.  Also, a few
+bug titles were truncated to avoid exceedingly long headline (you'll
+see a "[...]" at the end of those lines).
 
-This doesn't discriminate between serious, normal and wishlist bugs. I
-only care about how hard it is to fix a bug.  Also, I truncated a few
-bug titles (you'll see a "[...]" at the end of those lines).
-
-Here is goes:
+For discussion, it should be best to create sub-threads for each bug
+being discussed, unless something applies to a large number of bugs at
+once.
 
 
 * Open Bugs for debian's zsh package
