@@ -850,7 +850,8 @@ upstream.
      it's not clear whether this is indeed a bug or not. If it is, it's
      probably a bitch to fix.
 
-     Is there a bug state that would be appropriate? Pending? *shrug*
+     Axel informs me, that the most appropriate state for this bug is
+     probably `moreinfo'.
 
      This one is merged with #519571 and #520101.
 
