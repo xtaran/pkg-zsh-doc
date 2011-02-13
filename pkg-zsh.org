@@ -8,7 +8,7 @@ headlines/links/etc.
 
 This doesn't discriminate between serious, normal and wishlist
 bugs. It only cares about how hard it is to fix a bug.  Also, a few
-bug titles were truncated to avoid exceedingly long headline (you'll
+bug titles were truncated to avoid exceedingly long headlines (you'll
 see a "[...]" at the end of those lines).
 
 For discussion, it should be best to create sub-threads for each bug
