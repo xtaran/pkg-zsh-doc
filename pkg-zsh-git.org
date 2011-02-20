@@ -1,0 +1,232 @@
+* Branches
+
+  This is a quick overview of the branches that are being used for
+  debian's zsh package maintenance. This part does not go into much
+  detail on how the workflow works. For details about that, see the
+  `Workflow' part below.
+
+
+** upstream
+
+   The upstream sources from <git://zsh.git.sf.net/gitroot/zsh/zsh>.
+
+
+** debian
+
+   The debian changes for the debian `zsh' package.
+
+
+** others
+
+   These branches are rather optional and not required for basic
+   maintenance for of the `zsh' package.
+
+
+*** master
+
+    This is the old repository's main branch. Kept for historical
+    reasons.
+
+
+*** debian-beta
+
+    This could basically do *exactly* the same thing as `debian' does,
+    but just merge more often. Such a branch *could* then be used to
+    keep the packaging information for `zsh-beta'.
+
+
+* Workflow
+
+  This is a diagram, that outlines the proposed workflow. Basically,
+  the `debian' branch walks alongside the `upstream' branch and
+  upstream changes get merged into `debian' at defined points (for the
+  non-beta zsh package, that should be upstream commit tags).
+
+
+            * debian/4.3.11-4
+            |
+            |   * debian/4.3.11-5
+            |   |
+            |   |       * debian/4.3.12-1
+            |   |       |
+            |   |       |   * debian/4.3.12-2
+            |   |       |   |
+            |   |       |   |           * debian/4.3.13-1
+            |   |       |   |           |
+            |   |       |   |           | * debian/4.3.13-2
+            |   |       |   |           | |
+            |   |       |   |           | |   * debian/4.3.13-3
+            |   |       |   |           | |   |
+            |   |       |   |           | |   |
+          a-b-c-d---e-f-g-h-i-------j-k-l-m-n-o-p   `debian'
+         /         /               /
+      A-B-C-D-E-F-G-H-I-J-K-L-M-N-O-P-Q             `upstream'
+        |         |               |
+        |         |               |
+        |         |               * zsh-4.3.13
+        |         * zsh-4.3.12
+        |
+        * zsh-4.3.11
+
+
+** Working on the package
+
+
+*** Changes
+
+    Every change to the source (non-debian-dir) should be done by
+    adding quilt patches. Permanent patches (patches that would be kept
+    in 4.3.12-1) should be named specially ("deb_*" comes to mind).
+
+
+**** Example of adding a fix via a quilt patch
+
+     Let's say, there is an issue `#12345' which can be fixed by
+     patching `Functions/Misc/colors'. Here is how you could add that
+     patch (assuming clean git working directory):
+
+     ## First, add all exising patches, so the new one is added on top.
+     % quilt push -a
+
+     ## Add the new patch (say, the topmost patch is 0002-foo.diff).
+     % quilt new 0003-fix-colors.diff
+
+     ## Tell quilt which files are going to be changed.
+     % quilt add Functions/Misc/colors
+
+     ## Import the fix (manually by editor or by patching).
+     % vi Functions/Misc/colors
+
+     ## Pop all patches again to clean up the upstream source.
+     % quilt pop -a
+
+     ## Commit the new patch and the changes `series' file to git.
+     % git add debian/patches/0003-fix-colors.diff
+     % git add debian/patches/series
+     % git commit -a -m'Fixing foo in colors function (Closes: #12345)'
+
+     That's all.
+
+
+*** Releases
+
+    When a change justifies the release of a new package version, the
+    debian/changelog file should be updated and the resulting commit
+    should be tagged debian/<zsh-version>-n+1.
+
+
+*** Updating debian/changelog
+
+    This file should *not* be updated manually. The changes should be
+    inserted by running the `git-dch' tool from the `git-buildpackage'
+    right before a new release is about to be made.
+
+    <https://honk.sigxcpu.org/piki/projects/git-buildpackage/>
+
+
+** Transitioning to a new upstream version
+
+   When upstream releases a new version, we should follow these steps:
+
+
+*** Removing non deb_* quilt patches
+
+    All non deb_* patches should be removed from `debian/patches'
+    directory, unless they fix an issue that was *not* addressed
+    upstream and is therefore missing from upstream's code base.
+
+    If such a change should prove to be required to be kept with the
+    package permanently (e.g. because upstream refuses to apply the
+    patch), the patch should eventually be renamed to match the
+    "deb_*" nameing convention.
+
+
+*** Merge `upstream' into `debian'
+
+    After the `debian/patches' directory was cleaned up in the
+    previous step, merging `upstream' into `debian' should generally
+    lead to a working package again.
+
+    If old patches were still around, that could lead to conflicts
+    when those would be applied during the build process.
+
+    The message for the merge commit should be set to "New upstream
+    release" to allow `git-dch' to pick it up correctly later.
+
+
+*** Update the autotools files for the new release
+
+    This should be done to make sure, the build systems is always kept
+    up to date. This may be directly required if changes were made to
+    autotools input files (like `configure.ac').
+
+    For convenience, there is a script that automates this process:
+
+    % ./debian/at2quilt
+
+    After that, the involved quilt patches are updated, but not yet
+    committed to the git repository to allow for review.
+
+
+*** Fix outstanding bug
+
+    If *any* outstanding bugs are known, they should be fixed before
+    releasing a new package. Obviously, if any of the known bugs are
+    very hard to fix and the issue is not serious in nature, releasing
+    the package with the issue may be more important.
+
+    Again, all changes to non `debian/*' files should be done via
+    quilt patches.
+
+
+*** Verify that the package builds
+
+    % git reset --hard
+    % git clean -xdf
+    % QUILT_PATCHES=debian/patches
+    % export QUILT_PATCHES
+    % quilt push -a
+    % ./configure
+    % make all test
+
+
+*** Tag debian/<new-zsh-version>-1
+
+    After fixes for all serious and trivially fixable issues have been
+    added and it has been verified that the package builds, `git-dch'
+    should be used to update `debian/changelog' and the resulting
+    commit should be tagged as `debian/<new-zsh-version>-1'.
+
+
+** Generating packages
+
+   `gitpkg' is a simple tool to help generating packages from debian
+   packages which are maintained in the git version control system. It
+   works quite well in this workflow. In fact, it works out of the box:
+
+   % gitpkg debian/4.3.12-5 zsh-4.3.12
+
+   The first parameter (debian/4.3.12-5) is the debian tag which
+   points at the debian package version you want to build. The second
+   parameter is the tag of the upstream version of the corresponding
+   upstream release (zsh-4.3.12).
+
+   Per default, `gitpkg' generates it's output in
+   `../deb-packages'. This location is configurable.
+
+   Below directories for individual packages are created and in those,
+   data for individual package versions are created. For the above
+   example, this would look like this:
+
+   ../deb-packages/zsh/
+   ../deb-packages/zsh/zsh-4.3.12/
+   ../deb-packages/zsh/zsh_4.3.12.orig.tar.gz
+   ../deb-packages/zsh/zsh_4.3.12-5.debian.tar.gz
+   ../deb-packages/zsh/zsh_4.3.12-5.dsc
+
+   You may now change to `../deb-packages/zsh/zsh-4.3.12/' and build
+   binary package using `dpkg-buildpackage', `debuild' or the like.
+
+   `gitpkg' is available from:
+
+   <http://git.debian.org/?p=users/ron/gitpkg.git>
