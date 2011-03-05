@@ -139,6 +139,9 @@
      ## Import the fix (manually by editor or by patching).
      % vi Functions/Misc/colors
 
+     ## Refresh the patch
+     % quilt refresh
+
      ## Pop all patches again to clean up the upstream source.
      % quilt pop -a
 
