@@ -165,7 +165,7 @@
      % git clean -xdf
      % git reset --hard
 
-     That will make sure that any non-tracked files are removes and
+     That will make sure that any non-tracked files are removed and
      that any changes in tracked files are reverted. The latter will
      also make sure that no parts of a quilt patch-queue are still
      applied.
