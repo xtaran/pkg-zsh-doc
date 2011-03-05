@@ -323,7 +323,7 @@
     You may now change to `../deb-packages/zsh/zsh-4.3.12/' and build
     binary package using `dpkg-buildpackage', `debuild' or the like.
 
-    `gitpkg' is available from:
+    `gitpkg' is available as Debian package or from:
 
     <http://git.debian.org/?p=users/ron/gitpkg.git>
 
@@ -343,6 +343,8 @@
     before working on the package again, to avoid accidentially
     committing anything. See "Cleaning up the local repository" above
     for details.
+
+    `git-buildpackage' is available as Debian package or from:
 
     <https://honk.sigxcpu.org/piki/projects/git-buildpackage/>
 
