@@ -84,10 +84,14 @@
     order in which "quilt series" would list them. The format looks
     like this:
 
-       - deb_NNNN_<name>.diff
        - NNNN_<name>.diff
+       - deb_NNNN_<name>.diff
 
     Where `N' is a digit from 0 to 9. Counting starts at `0000'.
+
+    Debian-specific (i.e. deb_NNNN_<name>.diff) patches should be
+    applied after patches targeted towards upstream since the patches
+    targeted for upstream should not be against debian-specific code.
 
     Every patch should have a short annotation above the actual
     unified diff content, outlining the status of the patch. It is
