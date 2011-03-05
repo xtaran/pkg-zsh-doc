@@ -125,10 +125,13 @@
 
      Let's say, there is an issue `#12345' which can be fixed by
      patching `Functions/Misc/colors'. Here is how you could add that
-     patch (assuming clean git working directory):
+     patch (assuming clean git working directory and the topmost patch
+     is 0002-foo.diff):
 
-     ## First, add all exising patches, so the new one is added on top.
-     % quilt push -a
+     ## First, add all existing non-debian patches, so the new one is
+     ## added on top.
+
+     % quilt push 0002-foo.diff
 
      ## Add the new patch (say, the topmost patch is 0002-foo.diff).
      % quilt new 0003-fix-colors.diff
