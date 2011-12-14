@@ -180,8 +180,9 @@
 
 *** Updating debian/changelog
 
-    This file should *not* be updated manually. The changes should be
-    inserted by running the `git-dch' tool from the package
+    This file should *not* be updated manually except when fine-tuning
+    the changelog entry just shortly before a release. The changes
+    should be inserted by running the `git-dch' tool from the package
     `git-buildpackage' before a new release is about to be made.
 
     Changelog entries should be prefixed by a "[hashsum] " string,
