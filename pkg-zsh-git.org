@@ -202,6 +202,24 @@
 
    When upstream releases a new version, we should follow these steps:
 
+*** Merging new upstream tag (zsh-$version) into our upstream branch
+
+    % git checkout upstream
+    % git pull origin
+    % git fetch zsh
+    % git merge zsh-$version
+
+    If that doesn't do a fast-forward merge, a fast-forward merge can
+    be enforced as follows:
+
+    % git checkout upstream
+    % git reset --hard zsh-$version
+
+*** Create the fake orig tar ball (until we can work with upstream's tarball
+
+    % git archive --format=tar --output=../zsh_$version~ds1.orig.tar \
+          --prefix=zsh-$version/ zsh-$version
+    % bzip2 -9v ../zsh_$version~ds1.orig.tar
 
 *** Removing non deb_* quilt patches
 
