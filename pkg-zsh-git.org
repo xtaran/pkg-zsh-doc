@@ -218,9 +218,9 @@
 
 *** Create the fake orig tar ball (until we can work with upstream's tarball
 
-    % git archive --format=tar --output=../zsh_$version~ds1.orig.tar \
+    % git archive --format=tar --output=../zsh_$version.orig.tar \
           --prefix=zsh-$version/ zsh-$version
-    % bzip2 -9v ../zsh_$version~ds1.orig.tar
+    % bzip2 -9v ../zsh_$version.orig.tar
 
 *** Removing non deb_* quilt patches
 
